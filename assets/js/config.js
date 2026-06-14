@@ -20,6 +20,7 @@ const CONFIG = {
     CAROUSEL: 'carousel',
     MARQUEE:  'marquee',
     NEWS:     'news',
+    HOSTS:    'hosts',
   },
 
   // ─── Google Drive ────────────────────────────────────────

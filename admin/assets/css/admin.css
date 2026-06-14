@@ -115,3 +115,16 @@ body { font-size: .9rem; }
 /* ── 卡片 ── */
 .card { border-radius: .6rem; }
 .card-header { border-radius: .6rem .6rem 0 0 !important; }
+
+/* ── 主持人排序小按鈕 ── */
+.btn-xs {
+  font-size: .72rem;
+  line-height: 1.2;
+  padding: .1rem .3rem;
+  border-radius: .25rem;
+}
+
+/* ── 主持人照片 rounded-circle 確保不變形 ── */
+table img.rounded-circle {
+  object-fit: cover;
+}
