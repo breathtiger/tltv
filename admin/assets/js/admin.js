@@ -427,21 +427,29 @@ async function loadHostsTab() {
   const el = document.getElementById('hostsTabContent');
   el.innerHTML = loadingHtml();
   try {
-    const rows = await fetchSheetData(CONFIG.CONTENT_SHEETS.HOSTS, {
-      sheetId: CONFIG.CONTENT_SHEET_ID, range: 'A2:E',
-    });
-    hostsData = rows.map((r, i) => ({
-      idx:      i,
-      order:    parseInt(r['A']) || (i + 1),
-      name:     r['B'] || '',
-      photo_id: r['C'] || '',
-      program:  r['D'] || '',
-      active:   String(r['E'] || '').toUpperCase() !== 'FALSE',
-    })).sort((a, b) => a.order - b.order);
-    renderHostsTab();
-  } catch (err) {
-    el.innerHTML = `<div class="alert alert-danger">讀取失敗：${escHtml(err.message)}<br><small class="text-muted">若尚未建立 hosts 工作表，請先新增一位主持人，系統會自動建立。</small></div>`;
+    // 8 秒 timeout：hosts 工作表不存在時 gviz 可能不回應
+    const timeout = new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 8000));
+    const rows = await Promise.race([
+      fetchSheetData(CONFIG.CONTENT_SHEETS.HOSTS, {
+        sheetId: CONFIG.CONTENT_SHEET_ID, range: 'A2:E',
+      }),
+      timeout,
+    ]);
+    hostsData = rows
+      .filter(r => r['B'])
+      .map((r, i) => ({
+        idx:      i,
+        order:    parseInt(r['A']) || (i + 1),
+        name:     String(r['B'] || '').trim(),
+        photo_id: String(r['C'] || '').trim(),
+        program:  String(r['D'] || '').trim(),
+        active:   String(r['E'] || '').toUpperCase() !== 'FALSE',
+      })).sort((a, b) => a.order - b.order);
+  } catch (_) {
+    // hosts 工作表尚未建立（或讀取逾時）→ 以空陣列顯示，讓使用者可新增
+    hostsData = [];
   }
+  renderHostsTab();
 }
 
 function renderHostsTab() {
