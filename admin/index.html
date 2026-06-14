@@ -264,10 +264,21 @@
         </div>
         <div class="mb-3">
           <label class="form-label small fw-semibold">輪播圖 <span class="text-muted fw-normal">（選填，留空使用本機圖片）</span></label>
+          <input type="file" id="carouselFileInput" accept="image/jpeg,image/png,image/webp" class="d-none">
+          <div class="d-flex align-items-center gap-2 mb-1">
+            <button type="button" class="btn btn-outline-primary btn-sm px-3"
+              onclick="document.getElementById('carouselFileInput').click()">
+              <i class="bi bi-upload me-1"></i>點擊上傳圖片
+            </button>
+            <span class="text-muted small">檔案大小 500KB 以下・建議尺寸 2000px × 800px</span>
+          </div>
+          <div id="carouselUploadProgress" class="progress d-none mb-2" style="height:3px">
+            <div class="progress-bar progress-bar-striped progress-bar-animated w-100"></div>
+          </div>
           <div class="input-group mb-1">
             <span class="input-group-text"><i class="bi bi-image text-muted"></i></span>
             <input type="text" id="carouselEditImageId" class="form-control font-monospace small"
-              placeholder="Google Drive 檔案 ID"
+              placeholder="Drive 檔案 ID（上傳後自動填入，或手動貼入）"
               oninput="previewDriveImage('carouselEditImageId','carouselImgPreview')">
           </div>
           <img id="carouselImgPreview" src="" alt="預覽"
@@ -322,10 +333,21 @@
           </div>
           <div class="col-12">
             <label class="form-label small fw-semibold">封面圖片 <span class="text-muted fw-normal">（選填）</span></label>
+            <input type="file" id="newsFileInput" accept="image/jpeg,image/png,image/webp" class="d-none">
+            <div class="d-flex align-items-center gap-2 mb-1">
+              <button type="button" class="btn btn-outline-primary btn-sm px-3"
+                onclick="document.getElementById('newsFileInput').click()">
+                <i class="bi bi-upload me-1"></i>點擊上傳圖片
+              </button>
+              <span class="text-muted small">檔案大小 500KB 以下・建議尺寸 1200px × 600px</span>
+            </div>
+            <div id="newsUploadProgress" class="progress d-none mb-2" style="height:3px">
+              <div class="progress-bar progress-bar-striped progress-bar-animated w-100"></div>
+            </div>
             <div class="input-group mb-1">
               <span class="input-group-text"><i class="bi bi-image text-muted"></i></span>
               <input type="text" id="newsEditImageId" class="form-control font-monospace small"
-                placeholder="Google Drive 檔案 ID"
+                placeholder="Drive 檔案 ID（上傳後自動填入，或手動貼入）"
                 oninput="previewDriveImage('newsEditImageId','newsImgPreview')">
             </div>
             <img id="newsImgPreview" src="" alt="預覽"
@@ -363,16 +385,26 @@
           <input type="text" id="hostEditName" class="form-control" placeholder="例：方樺" maxlength="20">
         </div>
         <div class="mb-3">
-          <label class="form-label small fw-semibold">照片 Drive File ID <span class="text-muted fw-normal">（選填）</span></label>
+          <label class="form-label small fw-semibold">主持人照片 <span class="text-muted fw-normal">（選填）</span></label>
+          <input type="file" id="hostFileInput" accept="image/jpeg,image/png,image/webp" class="d-none">
+          <div class="d-flex align-items-center gap-2 mb-1">
+            <button type="button" class="btn btn-outline-primary btn-sm px-3"
+              onclick="document.getElementById('hostFileInput').click()">
+              <i class="bi bi-upload me-1"></i>點擊上傳照片
+            </button>
+            <span class="text-muted small">檔案大小 500KB 以下・建議尺寸 400px × 400px</span>
+          </div>
+          <div id="hostUploadProgress" class="progress d-none mb-2" style="height:3px">
+            <div class="progress-bar progress-bar-striped progress-bar-animated w-100"></div>
+          </div>
           <div class="input-group mb-1">
             <span class="input-group-text"><i class="bi bi-image text-muted"></i></span>
             <input type="text" id="hostEditPhotoId" class="form-control font-monospace small"
-              placeholder="Google Drive 檔案 ID"
+              placeholder="Drive 檔案 ID（上傳後自動填入，或手動貼入）"
               oninput="previewDriveImage('hostEditPhotoId','hostPhotoPreview')">
           </div>
           <img id="hostPhotoPreview" src="" alt="預覽"
             style="display:none;max-height:130px;border-radius:.4rem;margin-top:.4rem" class="img-thumbnail">
-          <div class="form-text">從 Drive 分享連結 URL 中取得 ID（<code>/d/</code> 後、<code>/view</code> 前那段）</div>
         </div>
         <div class="mb-3">
           <label class="form-label small fw-semibold">負責節目</label>

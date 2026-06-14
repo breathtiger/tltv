@@ -100,6 +100,21 @@ function doPost(e) {
         );
       }
 
+    // ── 圖片上傳：base64 → Google Drive ─────────────────────────────────────
+    } else if (action === 'upload_image') {
+      const folderId = String(payload.folderId || '');
+      if (!folderId) throw new Error('未提供 Drive 資料夾 ID');
+      const folder = DriveApp.getFolderById(folderId);
+      const bytes  = Utilities.base64Decode(payload.base64);
+      const blob   = Utilities.newBlob(bytes, String(payload.mimeType || 'image/jpeg'), String(payload.filename || 'image.jpg'));
+      const file   = folder.createFile(blob);
+      file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+      result.status = 'ok';
+      result.fileId = file.getId();
+      return ContentService
+        .createTextOutput(JSON.stringify(result))
+        .setMimeType(ContentService.MimeType.JSON);
+
     } else {
       throw new Error('未知操作：' + action);
     }

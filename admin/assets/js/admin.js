@@ -63,8 +63,70 @@ function bindTogglePwd() {
 function showDashboard() {
   document.getElementById('viewLogin').classList.add('d-none');
   document.getElementById('viewDashboard').classList.remove('d-none');
+  bindUploadInputs();
   activateTab('carousel');
   loadCarouselTab();
+}
+
+/* ────────────────────────────────────────────────────
+   圖片上傳（base64 → Apps Script → Google Drive）
+──────────────────────────────────────────────────── */
+function bindUploadInputs() {
+  [
+    { fileId: 'carouselFileInput', inputId: 'carouselEditImageId', previewId: 'carouselImgPreview', progressId: 'carouselUploadProgress' },
+    { fileId: 'newsFileInput',     inputId: 'newsEditImageId',     previewId: 'newsImgPreview',     progressId: 'newsUploadProgress'     },
+    { fileId: 'hostFileInput',     inputId: 'hostEditPhotoId',     previewId: 'hostPhotoPreview',   progressId: 'hostUploadProgress'     },
+  ].forEach(({ fileId, inputId, previewId, progressId }) => {
+    const el = document.getElementById(fileId);
+    if (!el) return;
+    el.addEventListener('change', async e => {
+      const file = e.target.files[0];
+      e.target.value = '';   // 允許同一檔案再次選取
+      if (file) await handleImageUpload(file, inputId, previewId, progressId);
+    });
+  });
+}
+
+async function handleImageUpload(file, inputId, previewId, progressId) {
+  if (file.size > 500 * 1024) {
+    showToast('圖片超過 500KB，請壓縮後再上傳', 'danger');
+    return;
+  }
+  if (!file.type.startsWith('image/')) {
+    showToast('請選擇圖片檔案（JPG / PNG / WebP）', 'danger');
+    return;
+  }
+
+  const progressEl = document.getElementById(progressId);
+  if (progressEl) progressEl.classList.remove('d-none');
+
+  try {
+    const base64 = await readFileAsBase64(file);
+    const result = await callScript({
+      action:   'upload_image',
+      filename: file.name,
+      mimeType: file.type,
+      base64,
+      folderId: CONFIG.DRIVE_FOLDER_ID,
+    });
+    if (!result.fileId) throw new Error('未取得 Drive 檔案 ID');
+    document.getElementById(inputId).value = result.fileId;
+    previewDriveImage(inputId, previewId);
+    showToast('圖片上傳成功');
+  } catch (err) {
+    showToast('上傳失敗：' + err.message, 'danger');
+  } finally {
+    if (progressEl) progressEl.classList.add('d-none');
+  }
+}
+
+function readFileAsBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload  = e => resolve(e.target.result.split(',')[1]);
+    reader.onerror = () => reject(new Error('檔案讀取失敗'));
+    reader.readAsDataURL(file);
+  });
 }
 
 async function sha256(str) {
@@ -114,8 +176,9 @@ async function callScript(payload) {
   });
   const text = await res.text();
   let json;
-  try { json = JSON.parse(text); } catch (_) { return; }
+  try { json = JSON.parse(text); } catch (_) { return {}; }
   if (json && json.status !== 'ok') throw new Error(json.message || '伺服器回傳錯誤');
+  return json;
 }
 
 /* ────────────────────────────────────────────────────
