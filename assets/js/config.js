@@ -21,6 +21,7 @@ const CONFIG = {
     MARQUEE:  'marquee',
     NEWS:     'news',
     HOSTS:    'hosts',
+    SEO:      'seo',
   },
 
   // ─── Google Drive ────────────────────────────────────────

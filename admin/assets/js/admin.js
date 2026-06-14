@@ -152,6 +152,7 @@ function bindTabNav() {
       if (tab === 'news')     loadNewsTab();
       if (tab === 'hosts')    loadHostsTab();
       if (tab === 'marquee')  loadMarqueeTab();
+      if (tab === 'settings') loadSeoTab();
     });
   });
 }
@@ -692,6 +693,37 @@ async function saveAllHosts() {
     });
     showToast('主持人順序已儲存');
     setTimeout(loadHostsTab, 1200);
+  } catch (err) {
+    showToast(err.message, 'danger');
+  }
+}
+
+/* ────────────────────────────────────────────────────
+   SEO 設定（在設定 Tab 內）
+──────────────────────────────────────────────────── */
+async function loadSeoTab() {
+  try {
+    const rows = await fetchSheetData(CONFIG.CONTENT_SHEETS.SEO, {
+      sheetId: CONFIG.CONTENT_SHEET_ID, range: 'A2:C',
+    });
+    if (rows.length) {
+      document.getElementById('seoTitle').value       = rows[0]['A'] || '';
+      document.getElementById('seoDescription').value = rows[0]['B'] || '';
+      document.getElementById('seoKeywords').value    = rows[0]['C'] || '';
+    }
+  } catch (_) {
+    // seo 工作表尚未建立，欄位留空
+  }
+}
+
+async function saveSeo() {
+  const title       = document.getElementById('seoTitle').value.trim();
+  const description = document.getElementById('seoDescription').value.trim();
+  const keywords    = document.getElementById('seoKeywords').value.trim();
+  if (!title) { showToast('請輸入網頁標題', 'danger'); return; }
+  try {
+    await callScript({ action: 'update_seo', title, description, keywords });
+    showToast('SEO 設定已儲存，前台約 30 秒後生效');
   } catch (err) {
     showToast(err.message, 'danger');
   }

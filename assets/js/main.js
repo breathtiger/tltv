@@ -49,15 +49,43 @@ const SAMPLE_NEWS = [
 document.addEventListener('DOMContentLoaded', () => {
   initBackToTop();
   initHostModal();
-  // 主持人從 Sheets 讀取，完成後建立輪播
   loadHosts().then(hosts => initHostCarousel(hosts));
   Promise.allSettled([
+    loadSeo(),
     loadCarouselText(),
     loadMarquee(),
     loadNews(),
     loadChannels(),
   ]);
 });
+
+// ── SEO（從 seo 工作表讀取，動態更新 <head>）─────────────────────────────────
+
+async function loadSeo() {
+  try {
+    const rows = await fetchSheetData(CONFIG.CONTENT_SHEETS.SEO, {
+      sheetId: CONFIG.CONTENT_SHEET_ID, range: 'A2:C',
+    });
+    if (!rows.length || !rows[0]['A']) return;
+    const title       = String(rows[0]['A'] || '').trim();
+    const description = String(rows[0]['B'] || '').trim();
+    const keywords    = String(rows[0]['C'] || '').trim();
+    if (title) {
+      document.title = title;
+      document.querySelectorAll('meta[property="og:title"], meta[name="twitter:title"]')
+        .forEach(el => el.setAttribute('content', title));
+    }
+    if (description) {
+      document.querySelectorAll(
+        'meta[name="description"], meta[property="og:description"], meta[name="twitter:description"]'
+      ).forEach(el => el.setAttribute('content', description));
+    }
+    if (keywords) {
+      const kw = document.querySelector('meta[name="keywords"]');
+      if (kw) kw.setAttribute('content', keywords);
+    }
+  } catch (_) {}
+}
 
 // ── Banner 輪播文字 + 圖片（從 carousel 工作表讀取）──────────────────────────
 

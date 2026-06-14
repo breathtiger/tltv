@@ -100,6 +100,20 @@ function doPost(e) {
         );
       }
 
+    // ── SEO 設定：更新 seo 工作表第 2 列 ────────────────────────────────────
+    } else if (action === 'update_seo') {
+      let sh = ss.getSheetByName('seo');
+      if (!sh) {
+        sh = ss.insertSheet('seo');
+        sh.getRange('A1:C1').setValues([['title', 'description', 'keywords']]);
+        sh.setFrozenRows(1);
+      }
+      sh.getRange('A2:C2').setValues([[
+        String(payload.title       || ''),
+        String(payload.description || ''),
+        String(payload.keywords    || ''),
+      ]]);
+
     // ── 圖片上傳：base64 → Google Drive ─────────────────────────────────────
     } else if (action === 'upload_image') {
       const folderId = String(payload.folderId || '');
