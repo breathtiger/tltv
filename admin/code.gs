@@ -108,9 +108,13 @@ function doPost(e) {
       const bytes  = Utilities.base64Decode(payload.base64);
       const blob   = Utilities.newBlob(bytes, String(payload.mimeType || 'image/jpeg'), String(payload.filename || 'image.jpg'));
       const file   = folder.createFile(blob);
-      file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+      const fileId = file.getId();   // 先取得 ID，不受 setSharing 影響
+      try {
+        // 共用雲端硬碟可能不支援此操作，忽略錯誤
+        file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+      } catch (_) {}
       result.status = 'ok';
-      result.fileId = file.getId();
+      result.fileId = fileId;
       return ContentService
         .createTextOutput(JSON.stringify(result))
         .setMimeType(ContentService.MimeType.JSON);
