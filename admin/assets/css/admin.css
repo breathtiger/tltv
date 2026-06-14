@@ -1,0 +1,117 @@
+:root {
+  --navy:  #0a1628;
+  --gold:  #d4a017;
+  --green: #0aa08c;
+}
+
+/* ── 全域 ── */
+body { font-size: .9rem; }
+.text-navy  { color: var(--navy); }
+.bg-navy    { background-color: var(--navy) !important; }
+.font-monospace { font-family: 'SFMono-Regular', Consolas, monospace; font-size: .82rem; }
+
+/* ── 登入卡片 ── */
+.login-card {
+  width: 100%;
+  max-width: 400px;
+  margin: 1rem;
+}
+.login-card .input-group-text {
+  border-right: none;
+}
+.login-card .form-control {
+  border-left: none;
+}
+.login-card .form-control:focus {
+  box-shadow: none;
+  border-color: #ced4da;
+}
+
+/* ── Topbar ── */
+#viewDashboard > nav .navbar-brand {
+  font-size: .88rem;
+}
+
+/* ── Tabs ── */
+.admin-tabs {
+  border-bottom: 2px solid #dee2e6;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.admin-tabs::-webkit-scrollbar { display: none; }
+.admin-tabs .nav-link {
+  color: #6c757d;
+  border: none;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  padding: .55rem 1rem;
+  white-space: nowrap;
+  font-weight: 500;
+  font-size: .875rem;
+  transition: color .15s, border-color .15s;
+}
+.admin-tabs .nav-link:hover {
+  color: var(--navy);
+}
+.admin-tabs .nav-link.active {
+  color: var(--navy);
+  font-weight: 700;
+  border-bottom-color: var(--green);
+}
+
+/* ── Tab body 動畫 ── */
+.tab-body {
+  animation: tabFadeIn .18s ease;
+}
+@keyframes tabFadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ── 資料表格 ── */
+.admin-table { margin-bottom: 0; }
+.admin-table thead th {
+  background: #f8f9fa;
+  font-weight: 600;
+  font-size: .82rem;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: #6c757d;
+  border-bottom: 2px solid #e9ecef;
+  white-space: nowrap;
+}
+.admin-table tbody tr:hover { background: #f8fbff; }
+.admin-table td { vertical-align: middle; }
+
+/* ── Carousel 排名徽章 ── */
+.banner-badge {
+  display: inline-block;
+  background: var(--navy);
+  color: #fff;
+  font-size: .72rem;
+  font-weight: 700;
+  padding: .2em .6em;
+  border-radius: .3rem;
+  letter-spacing: .04em;
+}
+
+/* ── Script URL 狀態 ── */
+#scriptUrlStatus.set   { color: var(--green); }
+#scriptUrlStatus.unset { color: #dc3545; }
+
+/* ── 空狀態提示 ── */
+.empty-state {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #adb5bd;
+}
+.empty-state i { font-size: 2.5rem; display: block; margin-bottom: .75rem; }
+
+/* ── 按鈕 spin ── */
+.btn .bi-spin { animation: spin .7s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── 卡片 ── */
+.card { border-radius: .6rem; }
+.card-header { border-radius: .6rem .6rem 0 0 !important; }

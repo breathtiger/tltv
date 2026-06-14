@@ -1,0 +1,304 @@
+:root {
+  --navy:  #0a1628;
+  --gold:  #d4a017;
+  --green: #0aa08c;   /* 企業色：天良標誌青綠 */
+  --navy-light: #132040;
+}
+
+html { scroll-behavior: smooth; }
+
+/* ── Navbar ── */
+#mainNav {
+  background-color: var(--navy);
+  box-shadow: 0 2px 10px rgba(0,0,0,.5);
+}
+#mainNav .navbar-brand { font-weight: 700; letter-spacing: .03em; }
+#mainNav .nav-link { font-size: .9rem; letter-spacing: .03em; transition: color .2s; }
+#mainNav .nav-link:hover,
+#mainNav .nav-link:focus { color: var(--gold) !important; }
+
+/* ── Hero Banner Carousel ── */
+#bannerCarousel { background: var(--navy); }
+.banner-slide-img {
+  width: 100%;
+  height: 520px;
+  object-fit: cover;
+  display: block;
+}
+.banner-caption {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    rgba(10,22,40,.82) 0%,
+    rgba(10,22,40,.45) 45%,
+    transparent        72%
+  );
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+}
+.hero-sub {
+  color: var(--gold);
+  letter-spacing: .18em;
+  font-size: .8rem;
+  text-transform: uppercase;
+  margin-bottom: .5rem;
+}
+.hero-title {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: .75rem;
+  text-shadow: 0 2px 8px rgba(0,0,0,.4);
+}
+.hero-desc {
+  font-size: 1.1rem;
+  color: rgba(255,255,255,.8);
+  text-shadow: 0 1px 4px rgba(0,0,0,.4);
+  margin-bottom: 0;
+}
+@media (max-width: 575px) {
+  .banner-slide-img { height: 280px; }
+}
+
+/* ── Ticker ── */
+.ticker-bar { padding: .65rem 0; }
+.ticker-label { font-weight: 700; font-size: .85rem; white-space: nowrap; }
+.ticker-track { position: relative; }
+.ticker-items {
+  display: inline-flex;
+  gap: 4rem;
+  animation: ticker-scroll 30s linear infinite;
+  white-space: nowrap;
+  will-change: transform;
+}
+.ticker-items:hover { animation-play-state: paused; }
+@keyframes ticker-scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ── Section Badge ── */
+.section-badge {
+  display: inline-flex;
+  align-items: center;
+  background: var(--green);
+  color: #fff;
+  padding: .28rem .85rem;
+  border-radius: 2rem;
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+.section-badge.bg-success  { background: var(--green) !important; }
+.section-badge.bg-danger   { background: #b02a37 !important; }
+.section-badge.bg-warning  { background: var(--gold) !important; color: #000 !important; }
+
+/* ── Announcement Cards ── */
+.announcement-card {
+  border: none;
+  border-radius: .75rem;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,.08);
+  transition: transform .2s, box-shadow .2s;
+}
+.announcement-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0,0,0,.14);
+}
+.announcement-card .card-img-top {
+  height: 180px;
+  object-fit: cover;
+  background: var(--navy);
+}
+.ann-img-placeholder {
+  height: 180px;
+  background: var(--navy);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold);
+  font-size: 2.5rem;
+}
+.announcement-date { font-size: .78rem; color: #888; }
+
+/* ── Channel Table ── */
+#channelTableContainer .table thead th {
+  background: var(--green);
+  color: #fff;
+  font-weight: 600;
+  white-space: nowrap;
+  border: none;
+}
+#channelTableContainer .table {
+  border-radius: .5rem;
+  overflow: hidden;
+}
+
+/* ── Host Cards ── */
+.host-card {
+  border: none;
+  border-radius: .75rem;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,.08);
+  transition: transform .2s, box-shadow .2s;
+}
+.host-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0,0,0,.14);
+}
+.host-program-badge {
+  font-size: .75rem;
+  background: var(--green);
+  color: #fff;
+  font-weight: 700;
+  padding: .2em .65em;
+  border-radius: .3rem;
+}
+
+/* ── NCC / Contact Section ── */
+.bg-navy { background-color: var(--navy) !important; }
+.company-dl dt {
+  color: var(--gold);
+  font-weight: 600;
+  padding-bottom: .75rem;
+}
+.company-dl dd {
+  color: rgba(255,255,255,.85);
+  padding-bottom: .75rem;
+}
+.ncc-doc-list { list-style: none; padding: 0; }
+.ncc-doc-link {
+  display: flex;
+  align-items: center;
+  padding: .6rem .75rem;
+  border-radius: .4rem;
+  color: rgba(255,255,255,.8);
+  text-decoration: none;
+  transition: background .2s, color .2s;
+  font-size: .9rem;
+  margin-bottom: .35rem;
+  border: 1px solid rgba(255,255,255,.12);
+}
+.ncc-doc-link:hover {
+  background: rgba(212,160,23,.15);
+  color: var(--gold);
+  border-color: rgba(212,160,23,.4);
+}
+
+/* ── Host Carousel ── */
+.host-carousel-wrap .carousel {
+  padding-bottom: 2.75rem; /* 讓 indicators 在卡片下方 */
+}
+.host-carousel-wrap .carousel-inner {
+  padding: 0 3.5rem; /* 左右留空給控制箭頭 */
+}
+.host-carousel-wrap .carousel-indicators {
+  position: absolute;
+  bottom: 0;
+  margin: 0;
+}
+.host-carousel-wrap .carousel-indicators button {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: var(--green);
+  border: none;
+  opacity: .35;
+  transition: opacity .2s;
+}
+.host-carousel-wrap .carousel-indicators button.active { opacity: 1; }
+.host-carousel-wrap .carousel-control-prev,
+.host-carousel-wrap .carousel-control-next {
+  width: 2.75rem;
+  height: 2.75rem;
+  top: 50%;
+  transform: translateY(calc(-50% - 1.4rem)); /* 往上移讓 indicators 不遮 */
+  background-color: var(--green);
+  border-radius: 50%;
+  opacity: .85;
+  transition: opacity .2s;
+}
+.host-carousel-wrap .carousel-control-prev:hover,
+.host-carousel-wrap .carousel-control-next:hover { opacity: 1; }
+.host-carousel-wrap .carousel-control-prev { left: 0; }
+.host-carousel-wrap .carousel-control-next { right: 0; }
+
+/* Host card image wrap */
+.host-img-wrap {
+  position: relative;
+  overflow: hidden;
+}
+.host-avatar {
+  width: 100%;
+  height: 240px;
+  object-fit: cover;
+  object-position: top;
+  display: block;
+  transition: transform .35s ease;
+}
+.host-img-placeholder {
+  height: 240px;
+  background: var(--navy);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold);
+  font-size: 3rem;
+}
+/* 放大提示 overlay */
+.host-zoom-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(10,22,40,.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity .25s;
+  font-size: 2rem;
+  color: #fff;
+  pointer-events: none;
+}
+.host-card {
+  cursor: pointer;
+}
+.host-card:hover .host-avatar      { transform: scale(1.06); }
+.host-card:hover .host-zoom-overlay { opacity: 1; }
+
+/* ── Footer Social Links ── */
+.footer-social-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,.2);
+  color: rgba(255,255,255,.55);
+  font-size: 1.15rem;
+  text-decoration: none;
+  transition: background .2s, color .2s, border-color .2s;
+}
+.footer-social-link:hover { color: #fff; border-color: rgba(255,255,255,.6); background: rgba(255,255,255,.08); }
+
+/* ── Back to Top ── */
+#backToTop { line-height: 1; display: flex !important; align-items: center; justify-content: center; }
+#backToTop[style*="display:none"] { display: none !important; }
+
+/* ── Setup Banner (config not set) ── */
+.setup-notice {
+  background: #fff3cd;
+  border: 1px solid #ffc107;
+  border-radius: .5rem;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 575px) {
+  .hero-banner { min-height: 300px; }
+  .hero-overlay { padding: 2.5rem 0; }
+  .company-dl dt, .company-dl dd { padding-bottom: .5rem; }
+}

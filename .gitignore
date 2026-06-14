@@ -1,0 +1,16 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# 編輯器
+.vscode/
+.idea/
+*.swp
+
+# 含機密的本機設定（若需部署至 GitHub Pages，請填入佔位符後再 commit）
+# assets/js/config.js
+
+# 後台 — Apps Script URL 存於瀏覽器 localStorage，不會產生本地檔案
+# 若未來建立本地設定檔請加入下方
+# admin/assets/js/admin-local-config.js

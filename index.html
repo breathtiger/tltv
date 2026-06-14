@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- ── 基本 SEO ── -->
+  <title>天良衛星電視台 Tien Liang TV｜全省頻道查詢・節目資訊</title>
+  <meta name="description" content="天良衛星電視台官方網站，提供全省有線電視頻道位置查詢、最新節目公告及主持人介紹。依 NCC 換照規範公開資訊，歡迎全省觀眾鎖定收看。">
+  <meta name="keywords" content="天良衛星電視台,Tien Liang TV,天良電視,衛星電視,有線電視頻道,頻道查詢,NCC,節目資訊,歌唱節目,台語節目,歡唱好時光">
+  <meta name="author" content="天良衛星電視台">
+  <meta name="robots" content="index, follow">
+
+  <!-- ── Favicon ── -->
+  <link rel="icon" type="image/png" href="assets/img/logo.png">
+  <link rel="apple-touch-icon" href="assets/img/logo.png">
+
+  <!-- ── Open Graph（部署後請將 YOUR_DOMAIN 換成正式網址） ── -->
+  <meta property="og:type"        content="website">
+  <meta property="og:site_name"   content="天良衛星電視台">
+  <meta property="og:title"       content="天良衛星電視台 Tien Liang TV｜全省頻道查詢・節目資訊">
+  <meta property="og:description" content="天良衛星電視台官方網站，提供全省有線電視頻道位置查詢、最新節目公告及主持人介紹。依 NCC 換照規範公開資訊，歡迎全省觀眾鎖定收看。">
+  <meta property="og:image"       content="https://YOUR_DOMAIN/assets/img/logo.png">
+  <meta property="og:url"         content="https://YOUR_DOMAIN/">
+  <meta property="og:locale"      content="zh_TW">
+
+  <!-- ── Twitter Card ── -->
+  <meta name="twitter:card"        content="summary">
+  <meta name="twitter:title"       content="天良衛星電視台 Tien Liang TV｜全省頻道查詢・節目資訊">
+  <meta name="twitter:description" content="天良衛星電視台官方網站，提供全省有線電視頻道位置查詢、最新節目公告及主持人介紹。">
+  <meta name="twitter:image"       content="https://YOUR_DOMAIN/assets/img/logo.png">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<!-- ── Navbar ── -->
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top" id="mainNav">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="#">
+      <img src="assets/img/logo.png" height="38" alt="天良衛星電視台 Logo" class="d-inline-block">
+      <span>天良衛星電視台</span>
+    </a>
+    <button class="navbar-toggler border-0" type="button"
+      data-bs-toggle="collapse" data-bs-target="#navbarMenu" aria-label="展開選單">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarMenu">
+      <ul class="navbar-nav ms-auto gap-1">
+        <li class="nav-item"><a class="nav-link px-3" href="#section-announcements">最新公告</a></li>
+        <li class="nav-item"><a class="nav-link px-3" href="#section-channels">頻道查詢</a></li>
+        <li class="nav-item"><a class="nav-link px-3" href="#section-programs">節目主持</a></li>
+        <li class="nav-item"><a class="nav-link px-3" href="#section-contact">聯絡申訴</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- ──────────────────────────────────────────────
+     區塊 1：電視台形象與最新公告
+─────────────────────────────────────────────── -->
+<section id="section-announcements">
+
+  <!-- Hero Banner Carousel -->
+  <div id="bannerCarousel" class="carousel slide carousel-fade"
+    data-bs-ride="carousel" data-bs-interval="5000">
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#bannerCarousel" data-bs-slide-to="0"
+        class="active" aria-current="true" aria-label="第 1 張"></button>
+      <button type="button" data-bs-target="#bannerCarousel" data-bs-slide-to="1"
+        aria-label="第 2 張"></button>
+      <button type="button" data-bs-target="#bannerCarousel" data-bs-slide-to="2"
+        aria-label="第 3 張"></button>
+      <button type="button" data-bs-target="#bannerCarousel" data-bs-slide-to="3"
+        aria-label="第 4 張"></button>
+    </div>
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="assets/img/carousel/banner_1.png" class="banner-slide-img" alt="天良衛星電視台 Banner 1">
+        <div class="banner-caption" id="caption-0"></div>
+      </div>
+      <div class="carousel-item">
+        <img src="assets/img/carousel/banner_2.png" class="banner-slide-img" alt="天良衛星電視台 Banner 2">
+        <div class="banner-caption" id="caption-1"></div>
+      </div>
+      <div class="carousel-item">
+        <img src="assets/img/carousel/banner_3.png" class="banner-slide-img" alt="天良衛星電視台 Banner 3">
+        <div class="banner-caption" id="caption-2"></div>
+      </div>
+      <div class="carousel-item">
+        <img src="assets/img/carousel/banner_4.png" class="banner-slide-img" alt="天良衛星電視台 Banner 4">
+        <div class="banner-caption" id="caption-3"></div>
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button"
+      data-bs-target="#bannerCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">上一張</span>
+    </button>
+    <button class="carousel-control-next" type="button"
+      data-bs-target="#bannerCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">下一張</span>
+    </button>
+  </div>
+
+  <!-- 跑馬燈 -->
+  <div class="ticker-bar bg-warning text-dark">
+    <div class="container d-flex align-items-center gap-3">
+      <span class="ticker-label flex-shrink-0">
+        <i class="bi bi-megaphone-fill me-1"></i>最新公告
+      </span>
+      <div class="ticker-track overflow-hidden flex-grow-1">
+        <div class="ticker-items" id="tickerItems">
+          <span class="opacity-50">載入中...</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 公告卡片 -->
+  <div class="container py-5">
+    <div class="d-flex align-items-center mb-4">
+      <div class="section-badge">
+        <i class="bi bi-bell-fill me-2"></i>最新消息
+      </div>
+    </div>
+    <div id="announcementGrid" class="row g-4">
+      <div class="col-12 text-center py-5 text-muted">
+        <div class="spinner-border text-primary" role="status" aria-label="載入中"></div>
+        <p class="mt-2 mb-0">載入公告中...</p>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ──────────────────────────────────────────────
+     區塊 2：全省有線電視頻道位置查詢
+─────────────────────────────────────────────── -->
+<section id="section-channels" class="bg-light py-5">
+  <div class="container">
+
+    <div class="section-badge bg-success mb-2">
+      <i class="bi bi-grid-3x3-gap-fill me-2"></i>頻道查詢
+    </div>
+    <h2 class="fw-bold mb-1">全省有線電視頻道位置查詢</h2>
+    <p class="text-muted mb-4">
+      依據 115 年最新頻道資料，符合主管機關對觀眾權益維護之要求，
+      以清晰之對照表格直接呈現於網頁中。
+    </p>
+
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <div class="row g-3 align-items-end">
+          <div class="col-sm-4">
+            <label for="countySelect" class="form-label fw-semibold text-secondary small text-uppercase">縣市</label>
+            <select id="countySelect" class="form-select">
+              <option value="">全部縣市</option>
+            </select>
+          </div>
+          <div class="col-sm-4">
+            <label for="operatorInput" class="form-label fw-semibold text-secondary small text-uppercase">關鍵字搜尋</label>
+            <input type="text" id="operatorInput" class="form-control" placeholder="搜尋系統台、頻道號碼...">
+          </div>
+          <div class="col-sm-4">
+            <button id="clearChannelFilter" class="btn btn-outline-secondary w-100">
+              <i class="bi bi-x-circle me-1"></i>清除篩選
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="channelTableContainer">
+      <div class="text-center py-5 text-muted">
+        <div class="spinner-border text-success" role="status" aria-label="載入中"></div>
+        <p class="mt-2 mb-0">載入頻道資料中...</p>
+      </div>
+    </div>
+
+    <p class="text-muted small mt-3">
+      <i class="bi bi-info-circle me-1"></i>
+      資料來源：NCC 115 年頻道資料，如有異動依主管機關公告為準。
+    </p>
+
+  </div>
+</section>
+
+<!-- ──────────────────────────────────────────────
+     區塊 3：核心節目與主持人看板（靜態呈現）
+─────────────────────────────────────────────── -->
+<section id="section-programs" class="py-5">
+  <div class="container">
+
+    <div class="section-badge bg-danger mb-2">
+      <i class="bi bi-camera-video-fill me-2"></i>節目主持
+    </div>
+    <h2 class="fw-bold mb-1">核心節目與主持人看板</h2>
+    <p class="text-muted mb-4">
+      本階段採靜態圖文展示，呈現電視台核心節目及知名主持人作為台灣電視台台灣電視台資料庫管理模組建置實績之審查佐證。
+    </p>
+
+    <div class="host-carousel-wrap">
+      <div id="hostCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="4500">
+        <div class="carousel-indicators" id="carouselIndicators"></div>
+        <div class="carousel-inner" id="carouselInner"></div>
+        <button class="carousel-control-prev" type="button"
+          data-bs-target="#hostCarousel" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">上一頁</span>
+        </button>
+        <button class="carousel-control-next" type="button"
+          data-bs-target="#hostCarousel" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">下一頁</span>
+        </button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ──────────────────────────────────────────────
+     區塊 4：法定公開資訊與聯絡申訴管道（NCC）
+─────────────────────────────────────────────── -->
+<section id="section-contact" class="bg-navy text-white py-5">
+  <div class="container">
+
+    <div class="section-badge bg-warning text-dark mb-2">
+      <i class="bi bi-shield-check me-2"></i>法定公開資訊
+    </div>
+    <h2 class="fw-bold mb-1">聯絡與申訴管道</h2>
+    <p class="text-light opacity-75 mb-5">
+      依 NCC 換照審查核心要件規定，本台公開下列資訊供委員及全台觀眾依縣市搜尋，
+      內容須與換照申請書及評鑑公文完全一致。
+    </p>
+
+    <div class="row g-5">
+
+      <!-- 公司資訊 -->
+      <div class="col-lg-5">
+        <h5 class="text-warning border-bottom border-warning pb-2 mb-3">
+          <i class="bi bi-building me-2"></i>公司資訊
+        </h5>
+        <dl class="row company-dl mb-0">
+          <dt class="col-sm-4">公司全銜</dt>
+          <dd class="col-sm-8">天良衛星電視台</dd>
+
+          <dt class="col-sm-4">營業地址</dt>
+          <dd class="col-sm-8">221 新北市汐止區大同路 1 段 147 號 7 樓</dd>
+
+          <dt class="col-sm-4">通訊地址</dt>
+          <dd class="col-sm-8">221 新北市汐止區大同路 1 段 147 號 7 樓</dd>
+
+          <dt class="col-sm-4">客服電話</dt>
+          <dd class="col-sm-8">
+            <a href="tel:0800083567" class="text-warning fw-bold">0800-083-567</a>
+            <span class="text-light opacity-75 small ms-1">（免付費）</span>
+          </dd>
+
+          <dt class="col-sm-4">傳真號碼</dt>
+          <dd class="col-sm-8">(02)2695-7500</dd>
+
+          <dt class="col-sm-4">官方電子郵件</dt>
+          <dd class="col-sm-8">
+            <a href="mailto:service@tlb.com.tw" class="text-warning">service@tlb.com.tw</a>
+          </dd>
+        </dl>
+      </div>
+
+      <!-- 地圖 -->
+      <div class="col-lg-4">
+        <h5 class="text-warning border-bottom border-warning pb-2 mb-3">
+          <i class="bi bi-geo-alt me-2"></i>位置地圖
+          <small class="text-light opacity-50 fw-normal ms-2" style="font-size:.75rem">
+            （廠商須負責嵌入 Google Maps 互動地圖，便於審查指引）
+          </small>
+        </h5>
+        <div class="ratio ratio-4x3 rounded overflow-hidden">
+          <iframe
+            src="https://maps.google.com/maps?q=221+新北市汐止區大同路1段147號7樓&output=embed&z=16"
+            style="border:0" allowfullscreen loading="lazy"
+            title="天良衛星電視台位置地圖">
+          </iframe>
+        </div>
+      </div>
+
+      <!-- NCC 文件 -->
+      <div class="col-lg-3">
+        <h5 class="text-warning border-bottom border-warning pb-2 mb-3">
+          <i class="bi bi-file-earmark-text me-2"></i>換照申請文件
+        </h5>
+        <ul class="list-unstyled ncc-doc-list" id="nccDocList">
+          <li>
+            <a href="https://drive.google.com/drive/folders/1YPCb89VCv7LmfaBcobdShQaldppYn55U"
+              target="_blank" rel="noopener" class="ncc-doc-link">
+              <i class="bi bi-folder2-open me-2"></i>換照相關文件資料夾
+            </a>
+          </li>
+        </ul>
+        <p class="text-light opacity-50 small mt-3">
+          <i class="bi bi-info-circle me-1"></i>
+          文件連結由後台管理，點擊可開啟 Google Drive 文件。
+        </p>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-black text-white-50 py-4 text-center">
+  <div class="container">
+    <div class="d-flex justify-content-center gap-3 mb-3">
+      <a href="https://www.facebook.com/tltv.tw/" target="_blank" rel="noopener"
+        class="footer-social-link" aria-label="Facebook">
+        <i class="bi bi-facebook"></i>
+      </a>
+      <a href="https://youtu.be/KN51acvjiJ8" target="_blank" rel="noopener"
+        class="footer-social-link" aria-label="YouTube">
+        <i class="bi bi-youtube"></i>
+      </a>
+    </div>
+    <small>
+      © 2026 天良衛星電視台 Tien Liang TV．
+      本網站資料僅供參考，正式以主管機關公告為準。
+    </small>
+  </div>
+</footer>
+
+<!-- 回到頂端 -->
+<button id="backToTop" class="btn btn-warning rounded-circle shadow position-fixed"
+  style="bottom:2rem;right:2rem;display:none;z-index:1050;width:44px;height:44px;padding:0"
+  aria-label="回到頂端">
+  <i class="bi bi-chevron-up"></i>
+</button>
+
+<!-- ── 主持人放大 Modal ── -->
+<div class="modal fade" id="hostModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content bg-dark text-white border-0 rounded-3 overflow-hidden">
+      <div class="modal-header border-secondary">
+        <div>
+          <h5 class="modal-title text-warning mb-0" id="hostModalName"></h5>
+          <small class="text-muted" id="hostModalRole">主持人</small>
+        </div>
+        <button type="button" class="btn-close btn-close-white ms-auto"
+          data-bs-dismiss="modal" aria-label="關閉"></button>
+      </div>
+      <div class="modal-body p-0 text-center bg-black">
+        <img id="hostModalImg" src="" alt=""
+          style="max-height:75vh;max-width:100%;object-fit:contain;display:block;margin:0 auto">
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/config.js"></script>
+<script src="assets/js/sheets.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>
