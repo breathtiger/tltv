@@ -30,7 +30,12 @@ function bindLoginForm() {
     e.preventDefault();
     const user = document.getElementById('loginUser').value.trim();
     const pwd  = document.getElementById('loginPwd').value;
-    const hash = await sha256(`${user}/${pwd}`);
+    if (user !== 'admin') {
+      document.getElementById('loginError').textContent = '帳號或密碼錯誤，請再試一次。';
+      document.getElementById('loginError').classList.remove('d-none');
+      return;
+    }
+    const hash = await sha256(pwd);
     if (hash === ADMIN_HASH) {
       sessionStorage.setItem('tltv_admin', '1');
       showDashboard();
