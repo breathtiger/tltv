@@ -764,6 +764,23 @@ async function saveMarquee() {
 /* ────────────────────────────────────────────────────
    節目時段表 Tab
 ──────────────────────────────────────────────────── */
+
+// 12 個預設時段（與前台 SCHEDULE_FALLBACK 一致）
+const SCHEDULE_DEFAULT = [
+  ['00:00 – 02:00', '每日精選',    '普級/重播', '',                    ''],
+  ['02:00 – 04:00', '每日精選',    '普級/重播', '',                    ''],
+  ['04:00 – 06:00', '每日精選',    '普級/重播', '',                    ''],
+  ['06:00 – 08:00', '天天開心',    '普級/新播', '天天開心',            '普級/新播'],
+  ['08:00 – 10:00', '珍珍有意思',  '普級/新播', '珍珍有意思',          '普級/新播'],
+  ['10:00 – 12:00', '親戚不計較',  '普級/新播', '鑽石大舞台・親戚不計較', '普級/新播'],
+  ['12:00 – 14:00', '快樂新視界',  '普級/新播', '鑽石大舞台・快樂新視界', '普級/新播'],
+  ['14:00 – 16:00', '阿揮倶樂部',  '普級/新播', '鑽石大舞台・阿揮倶樂部', '普級/新播'],
+  ['16:00 – 18:00', '歡喜好歌聲',  '普級/新播', '鑽石大舞台・歡喜好歌聲', '普級/新播'],
+  ['18:00 – 20:00', '感恩的歌聲',  '普級/新播', '鑽石大舞台・感恩的歌聲', '普級/新播'],
+  ['20:00 – 22:00', '冠軍你最棒',  '普級/新播', '冠軍你最棒',          '普級/新播'],
+  ['22:00 – 24:00', '笑嗨嗨倶樂部','普級/新播', '笑嗨嗨倶樂部',        '普級/新播'],
+];
+
 async function loadScheduleTab() {
   const el = document.getElementById('scheduleTabContent');
   el.innerHTML = loadingHtml();
@@ -776,7 +793,7 @@ async function loadScheduleTab() {
       timeout,
     ]);
     scheduleData = rows
-      .filter(r => r['A'])
+      .filter(r => r['A'] && /\d{2}:\d{2}/.test(String(r['A'])))
       .map((r, i) => ({
         idx: i,
         ts:  String(r['A'] || '').trim(),
@@ -794,9 +811,20 @@ async function loadScheduleTab() {
 function renderScheduleTab() {
   if (!scheduleData.length) {
     document.getElementById('scheduleTabContent').innerHTML =
-      `<div class="text-center text-muted py-5">
-         <i class="bi bi-calendar3 fs-2 d-block mb-2"></i>
-         尚無時段資料，點擊「新增時段」開始新增
+      `<div class="text-center py-5">
+         <i class="bi bi-calendar3 fs-2 d-block mb-2 text-muted"></i>
+         <p class="text-muted mb-3">
+           schedule 工作表尚未建立，或尚無時段資料。<br>
+           點擊下方按鈕一鍵寫入預設 12 個時段，再依需求修改。
+         </p>
+         <button class="btn btn-warning px-4" onclick="initDefaultSchedule()">
+           <i class="bi bi-arrow-down-circle me-2"></i>一鍵載入預設 12 時段
+         </button>
+         <div class="mt-3">
+           <button class="btn btn-sm btn-outline-primary" onclick="openScheduleModal()">
+             <i class="bi bi-plus-lg me-1"></i>或手動新增單一時段
+           </button>
+         </div>
        </div>`;
     return;
   }
@@ -944,6 +972,17 @@ async function saveAllSchedule() {
       rows: scheduleData.map(r => [r.ts, r.wp, r.wt, r.ep, r.et]),
     });
     showToast('時段表順序已儲存');
+    setTimeout(loadScheduleTab, 1200);
+  } catch (err) {
+    showToast(err.message, 'danger');
+  }
+}
+
+async function initDefaultSchedule() {
+  if (!confirm('確定要載入預設 12 個時段？現有資料（若有）將被覆蓋。')) return;
+  try {
+    await callScript({ action: 'update_all_schedule', rows: SCHEDULE_DEFAULT });
+    showToast('預設時段已寫入，可繼續修改');
     setTimeout(loadScheduleTab, 1200);
   } catch (err) {
     showToast(err.message, 'danger');
