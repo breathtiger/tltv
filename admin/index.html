@@ -95,6 +95,11 @@
           </a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" data-tab="schedule" href="#" role="tab">
+            <i class="bi bi-calendar3 me-1"></i>時段表
+          </a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" data-tab="settings" href="#" role="tab">
             <i class="bi bi-gear me-1"></i>設定
           </a>
@@ -183,6 +188,29 @@
                 <i class="bi bi-arrow-clockwise me-1"></i>重新讀取
               </button>
             </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Tab: 節目時段表 ── -->
+      <div id="tab-schedule" class="tab-body d-none">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <div>
+            <h6 class="fw-bold mb-0">節目時段表管理</h6>
+            <small class="text-muted">對應 schedule 工作表（A=時段 B=週一~五節目 C=週一~五分類 D=週六日節目 E=週六日分類）</small>
+          </div>
+          <div class="d-flex gap-2">
+            <button class="btn btn-outline-secondary btn-sm" onclick="loadScheduleTab()">
+              <i class="bi bi-arrow-clockwise me-1"></i>重新讀取
+            </button>
+            <button class="btn btn-primary btn-sm" onclick="openScheduleModal()">
+              <i class="bi bi-plus-lg me-1"></i>新增時段
+            </button>
+          </div>
+        </div>
+        <div id="scheduleTabContent">
+          <div class="text-center text-muted py-5">
+            <div class="spinner-border spinner-border-sm me-2"></div>載入中...
           </div>
         </div>
       </div>
@@ -454,6 +482,56 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
         <button type="button" class="btn btn-primary" id="btnSaveHost" onclick="saveHost()">
+          <i class="bi bi-check-lg me-1"></i>儲存
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── 節目時段表編輯 Modal ───────────────────────────────────────────────── -->
+<div class="modal fade" id="scheduleModal" tabindex="-1" aria-labelledby="scheduleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow">
+      <div class="modal-header">
+        <h6 class="modal-title fw-bold" id="scheduleModalLabel">新增時段</h6>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="scheduleEditIdx">
+        <div class="mb-3">
+          <label class="form-label small fw-semibold">時段 <span class="text-danger">*</span></label>
+          <input type="text" id="scheduleEditTimeSlot" class="form-control"
+            placeholder="例：06:00 – 08:00" maxlength="20">
+        </div>
+        <div class="mb-3">
+          <label class="form-label small fw-semibold">週一~五 節目名稱 <span class="text-danger">*</span></label>
+          <input type="text" id="scheduleEditWeekdayProg" class="form-control"
+            placeholder="例：天天開心" maxlength="30">
+        </div>
+        <div class="mb-3">
+          <label class="form-label small fw-semibold">週一~五 分類</label>
+          <input type="text" id="scheduleEditWeekdayType" class="form-control"
+            placeholder="例：普級/新播" maxlength="20">
+        </div>
+        <hr class="my-2">
+        <p class="small text-muted mb-2">
+          <i class="bi bi-info-circle me-1"></i>週六日留空 → 與週一~五相同，合併為全週單一格
+        </p>
+        <div class="mb-3">
+          <label class="form-label small fw-semibold">週六日 節目名稱 <span class="text-muted fw-normal">（選填）</span></label>
+          <input type="text" id="scheduleEditWeekendProg" class="form-control"
+            placeholder="例：鑽石大舞台・天天開心" maxlength="30">
+        </div>
+        <div class="mb-1">
+          <label class="form-label small fw-semibold">週六日 分類 <span class="text-muted fw-normal">（選填）</span></label>
+          <input type="text" id="scheduleEditWeekendType" class="form-control"
+            placeholder="例：普級/新播" maxlength="20">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-primary" id="btnSaveSchedule" onclick="saveScheduleRow()">
           <i class="bi bi-check-lg me-1"></i>儲存
         </button>
       </div>

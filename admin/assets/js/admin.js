@@ -7,9 +7,10 @@
 const ADMIN_HASH     = 'd18cb2eb634724f691a072efb47122726dd8a1dfdd0c514bb292c439c8c4b768';
 const SCRIPT_URL_KEY = 'tltv_script_url';
 
-let carouselData = [];   // [{idx, order, title, desc, image_id}]
-let newsData     = [];   // [{sheetRow, date, title, summary, content, image_id}]
-let hostsData    = [];   // [{idx, order, name, photo_id, program, active}]
+let carouselData  = [];   // [{idx, order, title, desc, image_id}]
+let newsData      = [];   // [{sheetRow, date, title, summary, content, image_id}]
+let hostsData     = [];   // [{idx, order, name, photo_id, program, active}]
+let scheduleData  = [];   // [{idx, ts, wp, wt, ep, et}]
 
 /* ────────────────────────────────────────────────────
    啟動
@@ -152,6 +153,7 @@ function bindTabNav() {
       if (tab === 'news')     loadNewsTab();
       if (tab === 'hosts')    loadHostsTab();
       if (tab === 'marquee')  loadMarqueeTab();
+      if (tab === 'schedule') loadScheduleTab();
       if (tab === 'settings') loadSeoTab();
     });
   });
@@ -754,6 +756,195 @@ async function saveMarquee() {
   try {
     await callScript({ action: 'update_marquee', lines });
     showToast('跑馬燈已儲存');
+  } catch (err) {
+    showToast(err.message, 'danger');
+  }
+}
+
+/* ────────────────────────────────────────────────────
+   節目時段表 Tab
+──────────────────────────────────────────────────── */
+async function loadScheduleTab() {
+  const el = document.getElementById('scheduleTabContent');
+  el.innerHTML = loadingHtml();
+  try {
+    const timeout = new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 8000));
+    const rows = await Promise.race([
+      fetchSheetData(CONFIG.CONTENT_SHEETS.SCHEDULE, {
+        sheetId: CONFIG.CONTENT_SHEET_ID, range: 'A2:E',
+      }),
+      timeout,
+    ]);
+    scheduleData = rows
+      .filter(r => r['A'])
+      .map((r, i) => ({
+        idx: i,
+        ts:  String(r['A'] || '').trim(),
+        wp:  String(r['B'] || '').trim(),
+        wt:  String(r['C'] || '').trim(),
+        ep:  String(r['D'] || '').trim(),
+        et:  String(r['E'] || '').trim(),
+      }));
+  } catch (_) {
+    scheduleData = [];
+  }
+  renderScheduleTab();
+}
+
+function renderScheduleTab() {
+  if (!scheduleData.length) {
+    document.getElementById('scheduleTabContent').innerHTML =
+      `<div class="text-center text-muted py-5">
+         <i class="bi bi-calendar3 fs-2 d-block mb-2"></i>
+         尚無時段資料，點擊「新增時段」開始新增
+       </div>`;
+    return;
+  }
+
+  const rows = scheduleData.map((r, i) => `
+    <tr>
+      <td class="align-middle">
+        <div class="d-flex flex-column gap-1" style="width:32px">
+          <button class="btn btn-outline-secondary btn-xs p-0 lh-1" style="font-size:.7rem"
+            onclick="moveScheduleRow(${i},-1)" ${i === 0 ? 'disabled' : ''}>▲</button>
+          <button class="btn btn-outline-secondary btn-xs p-0 lh-1" style="font-size:.7rem"
+            onclick="moveScheduleRow(${i},1)" ${i === scheduleData.length - 1 ? 'disabled' : ''}>▼</button>
+        </div>
+      </td>
+      <td class="align-middle fw-semibold text-nowrap small">${escHtml(r.ts)}</td>
+      <td class="align-middle">
+        <div class="fw-semibold">${escHtml(r.wp)}</div>
+        ${r.wt ? `<span class="text-muted small">（${escHtml(r.wt)}）</span>` : ''}
+      </td>
+      <td class="align-middle">
+        ${r.ep
+          ? `<div class="fw-semibold">${escHtml(r.ep)}</div>
+             ${r.et ? `<span class="text-muted small">（${escHtml(r.et)}）</span>` : ''}`
+          : '<span class="text-muted small">同週一~五</span>'}
+      </td>
+      <td class="align-middle text-end text-nowrap">
+        <button class="btn btn-sm btn-outline-primary me-1" onclick="openScheduleModal(${i})">
+          <i class="bi bi-pencil"></i>
+        </button>
+        <button class="btn btn-sm btn-outline-danger" onclick="deleteScheduleRow(${i})">
+          <i class="bi bi-trash"></i>
+        </button>
+      </td>
+    </tr>`).join('');
+
+  document.getElementById('scheduleTabContent').innerHTML = `
+    <div class="card border-0 shadow-sm">
+      <div class="table-responsive">
+        <table class="table table-hover mb-0 align-middle">
+          <thead class="table-light">
+            <tr>
+              <th style="width:44px">順序</th>
+              <th style="width:130px">時段</th>
+              <th>週一~五</th>
+              <th>週六日</th>
+              <th style="width:90px"></th>
+            </tr>
+          </thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+      <div class="card-footer bg-white border-0 pb-3 pt-2">
+        <button class="btn btn-warning btn-sm" onclick="saveAllSchedule()">
+          <i class="bi bi-arrow-up-circle me-1"></i>儲存排列順序
+        </button>
+        <span class="text-muted small ms-2">上下移動後請點此儲存</span>
+      </div>
+    </div>`;
+}
+
+function openScheduleModal(idx) {
+  const isNew = (idx === undefined);
+  document.getElementById('scheduleModalLabel').textContent = isNew ? '新增時段' : '編輯時段';
+  document.getElementById('scheduleEditIdx').value = isNew ? '' : idx;
+
+  if (isNew) {
+    document.getElementById('scheduleEditTimeSlot').value    = '';
+    document.getElementById('scheduleEditWeekdayProg').value = '';
+    document.getElementById('scheduleEditWeekdayType').value = '';
+    document.getElementById('scheduleEditWeekendProg').value = '';
+    document.getElementById('scheduleEditWeekendType').value = '';
+  } else {
+    const r = scheduleData[idx];
+    document.getElementById('scheduleEditTimeSlot').value    = r.ts;
+    document.getElementById('scheduleEditWeekdayProg').value = r.wp;
+    document.getElementById('scheduleEditWeekdayType').value = r.wt;
+    document.getElementById('scheduleEditWeekendProg').value = r.ep;
+    document.getElementById('scheduleEditWeekendType').value = r.et;
+  }
+  bootstrap.Modal.getOrCreateInstance(document.getElementById('scheduleModal')).show();
+}
+
+async function saveScheduleRow() {
+  const idxStr = document.getElementById('scheduleEditIdx').value;
+  const ts     = document.getElementById('scheduleEditTimeSlot').value.trim();
+  const wp     = document.getElementById('scheduleEditWeekdayProg').value.trim();
+  const wt     = document.getElementById('scheduleEditWeekdayType').value.trim();
+  const ep     = document.getElementById('scheduleEditWeekendProg').value.trim();
+  const et     = document.getElementById('scheduleEditWeekendType').value.trim();
+
+  if (!ts || !wp) { showToast('時段和週一~五節目名稱為必填', 'danger'); return; }
+
+  const isNew = (idxStr === '');
+  if (isNew) {
+    scheduleData.push({ idx: scheduleData.length, ts, wp, wt, ep, et });
+  } else {
+    const idx = parseInt(idxStr);
+    scheduleData[idx] = { ...scheduleData[idx], ts, wp, wt, ep, et };
+  }
+
+  setBtnLoading('btnSaveSchedule', true);
+  try {
+    await callScript({
+      action: 'update_all_schedule',
+      rows: scheduleData.map(r => [r.ts, r.wp, r.wt, r.ep, r.et]),
+    });
+    showToast(isNew ? '時段已新增' : '時段已更新');
+    bootstrap.Modal.getInstance(document.getElementById('scheduleModal')).hide();
+    setTimeout(loadScheduleTab, 1200);
+  } catch (err) {
+    showToast(err.message, 'danger');
+  } finally {
+    setBtnLoading('btnSaveSchedule', false);
+  }
+}
+
+async function deleteScheduleRow(idx) {
+  const r = scheduleData[idx];
+  if (!confirm(`確定要刪除「${r.ts}」這個時段？`)) return;
+  scheduleData.splice(idx, 1);
+  try {
+    await callScript({
+      action: 'update_all_schedule',
+      rows: scheduleData.map(r => [r.ts, r.wp, r.wt, r.ep, r.et]),
+    });
+    showToast('時段已刪除');
+    renderScheduleTab();
+  } catch (err) {
+    showToast(err.message, 'danger');
+    loadScheduleTab();
+  }
+}
+
+function moveScheduleRow(idx, dir) {
+  const to = idx + dir;
+  if (to < 0 || to >= scheduleData.length) return;
+  [scheduleData[idx], scheduleData[to]] = [scheduleData[to], scheduleData[idx]];
+  renderScheduleTab();
+}
+
+async function saveAllSchedule() {
+  try {
+    await callScript({
+      action: 'update_all_schedule',
+      rows: scheduleData.map(r => [r.ts, r.wp, r.wt, r.ep, r.et]),
+    });
+    showToast('時段表順序已儲存');
+    setTimeout(loadScheduleTab, 1200);
   } catch (err) {
     showToast(err.message, 'danger');
   }

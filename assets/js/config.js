@@ -22,6 +22,7 @@ const CONFIG = {
     NEWS:     'news',
     HOSTS:    'hosts',
     SEO:      'seo',
+    SCHEDULE: 'schedule',
   },
 
   // ─── Google Drive ────────────────────────────────────────

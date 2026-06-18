@@ -124,6 +124,45 @@ html { scroll-behavior: smooth; }
 }
 .announcement-date { font-size: .78rem; color: #888; }
 
+/* ── Schedule Table ── */
+.schedule-table {
+  min-width: 680px;
+  border-color: #dee2e6;
+}
+.schedule-table thead th {
+  background: var(--navy);
+  color: #fff;
+  font-weight: 700;
+  font-size: .9rem;
+  white-space: nowrap;
+  border-color: rgba(255,255,255,.15);
+}
+.schedule-th-time {
+  min-width: 110px;
+}
+.schedule-time {
+  background: #f0f4f8;
+  font-weight: 700;
+  font-size: .82rem;
+  white-space: nowrap;
+  color: var(--navy);
+  min-width: 110px;
+}
+.schedule-prog {
+  font-weight: 700;
+  font-size: .9rem;
+  color: var(--navy);
+}
+.schedule-type {
+  font-size: .75rem;
+  color: #9b1c1c;
+  margin-top: .1rem;
+}
+.schedule-repeat { background: #f8f9fa; }
+.schedule-weekday { background: #fff; }
+.schedule-weekend { background: #fffbf0; }
+.schedule-diamond .schedule-prog { color: #5b21b6; }
+
 /* ── Channel Table ── */
 #channelTableContainer .table thead th {
   background: var(--green);

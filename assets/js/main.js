@@ -22,6 +22,22 @@ const HOSTS_FALLBACK = [
   { name: '阿狗 & 緒繐', photo: 'assets/img/host/阿狗+緒繐01.png' },
 ];
 
+// ── 節目時段表備用資料（schedule 工作表空白時使用）──────────────────────────
+const SCHEDULE_FALLBACK = [
+  { ts: '00:00 – 02:00', wp: '每日精選', wt: '普級/重播', ep: '',              et: '' },
+  { ts: '02:00 – 04:00', wp: '每日精選', wt: '普級/重播', ep: '',              et: '' },
+  { ts: '04:00 – 06:00', wp: '每日精選', wt: '普級/重播', ep: '',              et: '' },
+  { ts: '06:00 – 08:00', wp: '天天開心',   wt: '普級/新播', ep: '天天開心',        et: '普級/新播' },
+  { ts: '08:00 – 10:00', wp: '珍珍有意思', wt: '普級/新播', ep: '珍珍有意思',      et: '普級/新播' },
+  { ts: '10:00 – 12:00', wp: '親戚不計較', wt: '普級/新播', ep: '鑽石大舞台・親戚不計較', et: '普級/新播' },
+  { ts: '12:00 – 14:00', wp: '快樂新視界', wt: '普級/新播', ep: '鑽石大舞台・快樂新視界', et: '普級/新播' },
+  { ts: '14:00 – 16:00', wp: '阿揮倶樂部', wt: '普級/新播', ep: '鑽石大舞台・阿揮倶樂部', et: '普級/新播' },
+  { ts: '16:00 – 18:00', wp: '歡喜好歌聲', wt: '普級/新播', ep: '鑽石大舞台・歡喜好歌聲', et: '普級/新播' },
+  { ts: '18:00 – 20:00', wp: '感恩的歌聲', wt: '普級/新播', ep: '鑽石大舞台・感恩的歌聲', et: '普級/新播' },
+  { ts: '20:00 – 22:00', wp: '冠軍你最棒',  wt: '普級/新播', ep: '冠軍你最棒',       et: '普級/新播' },
+  { ts: '22:00 – 24:00', wp: '笑嗨嗨倶樂部',wt: '普級/新播', ep: '笑嗨嗨倶樂部',     et: '普級/新播' },
+];
+
 // ── 最新消息備用資料（news 工作表空白時顯示）────────────────────────────────
 const SAMPLE_NEWS = [
   {
@@ -56,6 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
     loadMarquee(),
     loadNews(),
     loadChannels(),
+    loadSchedule(),
   ]);
 });
 
@@ -396,6 +413,72 @@ function renderChannelTable(rows) {
       </table>
     </div>
     <p class="text-muted small mt-2 mb-0">共 ${rows.length} 筆資料</p>`;
+}
+
+// ── 節目時段表（從 schedule 工作表讀取，空白時用備用資料）────────────────────
+
+async function loadSchedule() {
+  const container = document.getElementById('scheduleContainer');
+  let rows = [];
+  try {
+    const fetched = await fetchSheetData(
+      CONFIG.CONTENT_SHEETS.SCHEDULE,
+      { sheetId: CONFIG.CONTENT_SHEET_ID, range: 'A2:E' }
+    );
+    rows = fetched
+      .filter(r => r['A'])
+      .map(r => ({
+        ts: String(r['A'] || '').trim(),
+        wp: String(r['B'] || '').trim(),
+        wt: String(r['C'] || '').trim(),
+        ep: String(r['D'] || '').trim(),
+        et: String(r['E'] || '').trim(),
+      }));
+  } catch (e) {
+    console.warn('[Schedule]', e.message);
+  }
+  if (!rows.length) rows = SCHEDULE_FALLBACK;
+  container.innerHTML = renderScheduleTable(rows);
+}
+
+function renderScheduleTable(rows) {
+  const tbody = rows.map(r => {
+    const wt = r.wt ? `（${escHtml(r.wt)}）` : '';
+    if (!r.ep) {
+      return `<tr>
+        <td class="schedule-time">${escHtml(r.ts)}</td>
+        <td colspan="7" class="schedule-repeat">
+          <div class="schedule-prog">${escHtml(r.wp)}</div>
+          ${wt ? `<div class="schedule-type">${wt}</div>` : ''}
+        </td>
+      </tr>`;
+    }
+    const et = (r.et || r.wt) ? `（${escHtml(r.et || r.wt)}）` : '';
+    const isDiamond = r.ep !== r.wp;
+    return `<tr>
+      <td class="schedule-time">${escHtml(r.ts)}</td>
+      <td colspan="5" class="schedule-weekday">
+        <div class="schedule-prog">${escHtml(r.wp)}</div>
+        ${wt ? `<div class="schedule-type">${wt}</div>` : ''}
+      </td>
+      <td colspan="2" class="schedule-weekend${isDiamond ? ' schedule-diamond' : ''}">
+        <div class="schedule-prog">${escHtml(r.ep)}</div>
+        ${et ? `<div class="schedule-type">${et}</div>` : ''}
+      </td>
+    </tr>`;
+  }).join('');
+
+  return `<div class="table-responsive">
+    <table class="table table-bordered schedule-table text-center align-middle mb-0">
+      <thead>
+        <tr>
+          <th class="schedule-th-time">時段 ╲ 星期</th>
+          <th>一</th><th>二</th><th>三</th><th>四</th><th>五</th><th>六</th><th>日</th>
+        </tr>
+      </thead>
+      <tbody>${tbody}</tbody>
+    </table>
+  </div>`;
 }
 
 // ── Back to Top ──────────────────────────────────────────────────────────────

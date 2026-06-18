@@ -2,6 +2,57 @@
 
 ---
 
+## 紀錄 #2 — 2026-06-18
+
+### 本次完成事項
+
+| # | 項目 | 相關檔案 |
+|---|------|---------|
+| 1 | 首頁加入「節目時段表」區塊（最新消息與頻道查詢之間） | `index.html`、`assets/css/style.css` |
+| 2 | 節目時段表改為動態讀取（Google Sheets `schedule` 工作表） | `assets/js/main.js`、`assets/js/config.js` |
+| 3 | 後台新增「時段表」Tab — 支援新增 / 編輯 / 刪除 / 排序 | `admin/index.html`、`admin/assets/js/admin.js` |
+| 4 | Apps Script 加入 `update_all_schedule` 全量覆寫動作 | `admin/code.gs` |
+| 5 | `CLAUDE.md` 補充 hosts / schedule 工作表欄位規格 | `CLAUDE.md` |
+
+### 技術細節
+
+#### 節目時段表架構
+
+**Sheets 工作表名稱：** `schedule`（位於 `CONTENT_SHEET_ID` 試算表）
+
+**欄位：**
+```
+A: time_slot      時段（例：06:00 – 08:00）
+B: weekday_prog   週一~五 節目名稱
+C: weekday_type   週一~五 分類（例：普級/新播）
+D: weekend_prog   週六日 節目名稱（留空 → 合併為全週同一格）
+E: weekend_type   週六日 分類（留空 → 同 weekday_type）
+```
+
+**前台渲染規則：**
+- `weekend_prog` 為空 → `colspan=7`（全週合併，如每日精選重播）
+- `weekend_prog` 有值且與 `weekday_prog` 不同 → 週六日欄紫色強調（鑽石大舞台特別版）
+- Sheet 尚未建立或為空 → 顯示 `SCHEDULE_FALLBACK`（12 時段備用資料）
+
+**後台操作：**
+1. 登入後台 → 切換「時段表」Tab
+2. 可新增 / 編輯 / 刪除各時段列
+3. 以 ▲▼ 調整順序後點「儲存排列順序」
+4. 儲存後約 10–30 秒前台生效
+
+**Apps Script 動作（code.gs）：**
+- `update_all_schedule` — 全量覆寫 schedule 工作表（A2:E），首次呼叫自動建立工作表
+
+### 注意事項
+
+| 項目 | 說明 |
+|------|------|
+| schedule 工作表 | 首次從後台儲存時 Apps Script 自動建立（含標題列）；不需手動建立 |
+| 備用資料 | `main.js` 內的 `SCHEDULE_FALLBACK` 含完整 12 個時段，可隨時作為參考 |
+| 前次未推送 commits | 本次一併推上（共 9 commits）：含圖片上傳、SEO 後台、首頁更新等 |
+
+---
+
 ## 紀錄 #1 — 2026-06-14
 
 ### 本次完成事項

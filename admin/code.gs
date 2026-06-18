@@ -114,6 +114,24 @@ function doPost(e) {
         String(payload.keywords    || ''),
       ]]);
 
+    // ── 節目時段表：全量覆寫 ─────────────────────────────────────────────────
+    } else if (action === 'update_all_schedule') {
+      const sh = getOrCreateScheduleSheet(ss);
+      const lastRow = sh.getLastRow();
+      if (lastRow > 1) sh.getRange(2, 1, lastRow - 1, 5).clearContent();
+      const rows = (payload.rows || []).filter(r => r[0]);
+      if (rows.length) {
+        sh.getRange(2, 1, rows.length, 5).setValues(
+          rows.map(r => [
+            String(r[0] || ''),
+            String(r[1] || ''),
+            String(r[2] || ''),
+            String(r[3] || ''),
+            String(r[4] || ''),
+          ])
+        );
+      }
+
     // ── 圖片上傳：base64 → Google Drive ─────────────────────────────────────
     } else if (action === 'upload_image') {
       const folderId = String(payload.folderId || '');
@@ -152,6 +170,17 @@ function getOrCreateHostSheet(ss) {
   if (!sh) {
     sh = ss.insertSheet('hosts');
     sh.getRange('A1:E1').setValues([['order', 'name', 'photo_id', 'program', 'active']]);
+    sh.setFrozenRows(1);
+  }
+  return sh;
+}
+
+// ── 取得或建立 schedule 工作表 ───────────────────────────────────────────────
+function getOrCreateScheduleSheet(ss) {
+  let sh = ss.getSheetByName('schedule');
+  if (!sh) {
+    sh = ss.insertSheet('schedule');
+    sh.getRange('A1:E1').setValues([['time_slot', 'weekday_prog', 'weekday_type', 'weekend_prog', 'weekend_type']]);
     sh.setFrozenRows(1);
   }
   return sh;

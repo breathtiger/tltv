@@ -50,6 +50,7 @@
     <div class="collapse navbar-collapse" id="navbarMenu">
       <ul class="navbar-nav ms-auto gap-1">
         <li class="nav-item"><a class="nav-link px-3" href="#section-announcements">最新公告</a></li>
+        <li class="nav-item"><a class="nav-link px-3" href="#section-schedule">節目時段表</a></li>
         <li class="nav-item"><a class="nav-link px-3" href="#section-channels">頻道查詢</a></li>
         <li class="nav-item"><a class="nav-link px-3" href="#section-programs">節目主持</a></li>
         <li class="nav-item"><a class="nav-link px-3" href="#section-contact">關於我們</a></li>
@@ -138,6 +139,32 @@
 </section>
 
 <!-- ──────────────────────────────────────────────
+     區塊 1.5：節目時段表
+─────────────────────────────────────────────── -->
+<section id="section-schedule" class="py-5">
+  <div class="container">
+
+    <div class="section-badge bg-warning mb-2">
+      <i class="bi bi-calendar3 me-2"></i>節目時段表
+    </div>
+    <h2 class="fw-bold mb-1">天良電視台節目時段表</h2>
+    <p class="text-muted mb-4">自 115 年 06 月 01 日起生效，如有異動另行公告。</p>
+
+    <div id="scheduleContainer">
+      <div class="text-center text-muted py-4">
+        <div class="spinner-border text-warning" role="status" aria-label="載入中"></div>
+        <p class="mt-2 mb-0">載入節目時段表...</p>
+      </div>
+    </div>
+    <p class="text-muted small mt-3" id="scheduleNote">
+      <i class="bi bi-info-circle me-1"></i>
+      週六日 10:00–20:00 為「鑽石大舞台」聯播特別版。
+    </p>
+
+  </div>
+</section>
+
+<!-- ──────────────────────────────────────────────
      區塊 2：全省有線電視頻道位置查詢
 ─────────────────────────────────────────────── -->
 <section id="section-channels" class="bg-light py-5">
@@ -198,10 +225,7 @@
     <div class="section-badge bg-danger mb-2">
       <i class="bi bi-camera-video-fill me-2"></i>節目主持
     </div>
-    <h2 class="fw-bold mb-1">核心節目與主持人看板</h2>
-    <p class="text-muted mb-4">
-      本階段採靜態圖文展示，呈現電視台核心節目及知名主持人作為台灣電視台台灣電視台資料庫管理模組建置實績之審查佐證。
-    </p>
+    <h2 class="fw-bold mb-1">主持人看板</h2>
 
     <div class="host-carousel-wrap">
       <div id="hostCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="4500">
@@ -266,9 +290,6 @@
       <div class="col-lg-6">
         <h5 class="text-warning border-bottom border-warning pb-2 mb-3">
           <i class="bi bi-geo-alt me-2"></i>位置地圖
-          <small class="text-light opacity-50 fw-normal ms-2" style="font-size:.75rem">
-            （廠商須負責嵌入 Google Maps 互動地圖，便於審查指引）
-          </small>
         </h5>
         <div class="ratio ratio-4x3 rounded overflow-hidden">
           <iframe
