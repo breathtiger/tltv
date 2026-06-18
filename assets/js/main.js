@@ -428,7 +428,7 @@ async function loadSchedule() {
       timeout,
     ]);
     const rows = fetched
-      .filter(r => r['A'])
+      .filter(r => r['A'] && /\d{2}:\d{2}/.test(String(r['A'])))
       .map(r => ({
         ts: String(r['A'] || '').trim(),
         wp: String(r['B'] || '').trim(),
