@@ -419,13 +419,15 @@ function renderChannelTable(rows) {
 
 async function loadSchedule() {
   const container = document.getElementById('scheduleContainer');
-  let rows = [];
+  // 立即顯示備用資料，不讓使用者看到 spinner 卡死
+  container.innerHTML = renderScheduleTable(SCHEDULE_FALLBACK);
   try {
-    const fetched = await fetchSheetData(
-      CONFIG.CONTENT_SHEETS.SCHEDULE,
-      { sheetId: CONFIG.CONTENT_SHEET_ID, range: 'A2:E' }
-    );
-    rows = fetched
+    const timeout = new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 6000));
+    const fetched = await Promise.race([
+      fetchSheetData(CONFIG.CONTENT_SHEETS.SCHEDULE, { sheetId: CONFIG.CONTENT_SHEET_ID, range: 'A2:E' }),
+      timeout,
+    ]);
+    const rows = fetched
       .filter(r => r['A'])
       .map(r => ({
         ts: String(r['A'] || '').trim(),
@@ -434,11 +436,10 @@ async function loadSchedule() {
         ep: String(r['D'] || '').trim(),
         et: String(r['E'] || '').trim(),
       }));
+    if (rows.length) container.innerHTML = renderScheduleTable(rows);
   } catch (e) {
     console.warn('[Schedule]', e.message);
   }
-  if (!rows.length) rows = SCHEDULE_FALLBACK;
-  container.innerHTML = renderScheduleTable(rows);
 }
 
 function renderScheduleTable(rows) {
